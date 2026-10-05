@@ -1,5 +1,5 @@
 const products = [
-  { name: 'Starter', amount: 2864, term: 30, fee: 143.2, tax: 286.5, repayment: 3293.7, note: 'The smallest illustrative amount.', taxCaption: 'Starter example' },
+  { name: 'Starter', amount: 2864, term: 30, fee: 143.2, tax: 286.5, repayment: 3293.7, note: 'The smallest illustrative amount.', taxCaption: 'Starter charge' },
   { name: 'Starter Plus', amount: 3500, term: 30, fee: 175, tax: 350, repayment: 4025, note: 'A little more room for the month.' },
   { name: 'Basic', amount: 5000, term: 30, fee: 250, tax: 500, repayment: 5750, note: 'A straightforward everyday option.' },
   { name: 'Basic Plus', amount: 7500, term: 30, fee: 375, tax: 750, repayment: 8625, note: 'For a plan with a few more moving parts.' },
@@ -66,8 +66,8 @@ function renderResult(product) {
 }
 
 function renderProducts() {
-  productRows.innerHTML = products.map((product) => `<tr><td>${product.name}${product.max ? ' <span class="table-badge">MAX</span>' : ''}</td><td>${money(product.amount)}</td><td>${product.term} days</td><td>${money(product.fee)}</td><td>${money(product.repayment)}</td><td><button class="select-product" data-product="${product.amount}">View example ↗</button></td></tr>`).join('');
-  mobileProductList.innerHTML = products.map((product) => `<article class="mobile-product-card"><div><strong>${product.name}</strong><span>${money(product.amount)} · ${product.term} days</span></div><span class="mobile-repay">${money(product.repayment)}</span><button data-product="${product.amount}">View example ↗</button></article>`).join('');
+  productRows.innerHTML = products.map((product) => `<tr><td>${product.name}${product.max ? ' <span class="table-badge">MAX</span>' : ''}</td><td>${money(product.amount)}</td><td>${product.term} days</td><td>${money(product.fee)}</td><td>${money(product.repayment)}</td><td><button class="select-product" data-product="${product.amount}">View option ↗</button></td></tr>`).join('');
+  mobileProductList.innerHTML = products.map((product) => `<article class="mobile-product-card"><div><strong>${product.name}</strong><span>${money(product.amount)} · ${product.term} days</span></div><span class="mobile-repay">${money(product.repayment)}</span><button data-product="${product.amount}">View option ↗</button></article>`).join('');
   document.querySelectorAll('[data-product]').forEach((button) => button.addEventListener('click', () => { renderResult(products.find((product) => product.amount === Number(button.dataset.product))); document.querySelector('#calculator').scrollIntoView({ behavior: 'smooth' }); }));
 }
 

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f0e8" />
+    <meta name="description" content="Gambia Loan — a transparent, illustrative way to explore GMD loan options." />
+    <title>Gambia Loan — clearer borrowing in GMD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="logo.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <div class="notice-bar">
+        <div class="container notice-inner">
+          <span class="notice-dot" aria-hidden="true"></span>
+          <span>Illustrative prototype · No real applications or personal data are stored</span>
+          <a href="#responsible">Read the responsible lending note <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+
+      <header class="site-header container">
+        <a class="brand" href="#top" aria-label="Gambia Loan home">
+          <span class="brand-mark" aria-hidden="true"><span>G</span></span>
+          <span class="brand-wordmark">Gambia<span>Loan</span></span>
+        </a>
+        <nav class="desktop-nav" aria-label="Primary navigation">
+          <a href="#products">Products</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#responsible">Borrow responsibly</a>
+          <a href="#support">Support</a>
+        </nav>
+        <button class="button button-small button-outline" data-open-demo>Explore an application <span aria-hidden="true">↗</span></button>
+      </header>
+
+      <main id="top">
+        <section class="hero container">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span> The clearer way to borrow in GMD</div>
+            <h1>Make room for what <em>matters.</em></h1>
+            <p class="hero-lede">Explore a range of illustrative loan options for everyday plans, with the full cost laid out before you decide.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#calculator">Find your fit <span aria-hidden="true">↘</span></a>
+              <a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="hero-footnote"><span class="checkmark">✓</span> From GMD 2,864 to GMD 100,000 <span class="footnote-separator"></span> 16 illustrative products</div>
+          </div>
+          <div class="hero-visual" aria-label="Illustration of planning a loan">
+            <div class="sun-disc"></div>
+            <div class="hero-orbit orbit-one"></div>
+            <div class="hero-orbit orbit-two"></div>
+            <div class="hero-card hero-card-back">
+              <div class="mini-label">NEXT REPAYMENT</div>
+              <strong>GMD 3,293.70</strong>
+              <div class="mini-progress"><span></span></div>
+              <div class="mini-meta"><span>Starter</span><span>30 days</span></div>
+            </div>
+            <div class="hero-card hero-card-main">
+              <div class="card-topline"><span class="card-kicker">GAMBIA LOAN</span><span class="signal"><i></i><i></i><i></i></span></div>
+              <div class="card-question">What would make<br /><em>this month</em> lighter?</div>
+              <div class="card-note">Plan with the number<br />that works for you.</div>
+              <div class="card-amount"><span>GMD</span> 10,000</div>
+              <div class="card-rule"></div>
+              <div class="card-bottom"><span>Clear terms</span><span>→</span></div>
+            </div>
+            <div class="hero-scribble" aria-hidden="true">for your<br /><span>next move</span> <b>↗</b></div>
+            <div class="leaf leaf-one" aria-hidden="true"></div><div class="leaf leaf-two" aria-hidden="true"></div><div class="leaf leaf-three" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <section class="trust-strip">
+          <div class="container trust-inner">
+            <span class="trust-label">A simple way to start thinking about</span>
+            <div class="trust-points"><span><b>01</b> Transparent costs</span><span><b>02</b> Thoughtful choices</span><span><b>03</b> No pressure</span></div>
+          </div>
+        </section>
+
+        <section class="calculator-section container section-space" id="calculator">
+          <div class="section-intro split-intro">
+            <div><div class="eyebrow"><span class="eyebrow-line"></span> Your number, your pace</div><h2>Find a loan that<br /><em>fits the plan.</em></h2></div>
+            <p>Use the slider to explore the illustrative products available across the range. Every amount below is shown in Gambian dalasi, so you can compare the full picture at a glance.</p>
+          </div>
+          <div class="calculator-layout">
+            <div class="amount-panel panel-paper">
+              <div class="panel-heading"><span class="step-tag">01 / CHOOSE AMOUNT</span><span class="helper">Adjust with care</span></div>
+              <div class="amount-display"><span>GMD</span><output id="amount-output" for="amount-range">10,000</output></div>
+              <input id="amount-range" type="range" min="2864" max="100000" step="1" value="10000" aria-label="Loan amount in Gambian dalasi" />
+              <div class="range-labels"><span>GMD 2,864</span><span>GMD 100,000</span></div>
+              <div class="quick-amounts" aria-label="Quick amount choices"><button data-amount="2864">2,864</button><button data-amount="10000" class="active">10,000</button><button data-amount="25000">25,000</button><button data-amount="50000">50,000</button><button data-amount="100000">100,000</button></div>
+              <div class="amount-note"><span class="note-icon">i</span><span>Amounts shown are illustrative only and subject to KYC, affordability assessment, lender policy and legal review.</span></div>
+            </div>
+            <div class="result-panel">
+              <div class="result-top"><div><span class="step-tag">02 / REVIEW THE PICTURE</span><h3 id="product-name">Standard</h3><p id="product-note">A 45-day option for a little more room.</p></div><span class="product-pill" id="product-term">45 days</span></div>
+              <div class="repayment-highlight"><div><span class="muted-label">Illustrative total repayment</span><strong id="total-repayment">GMD 11,500.00</strong></div><div class="due-chip"><span>Illustrative due date</span><b id="due-date">Nov 19, 2026</b></div></div>
+              <div class="breakdown" aria-live="polite"><div class="breakdown-row"><span>Principal</span><strong id="principal-value">GMD 10,000.00</strong></div><div class="breakdown-row"><span>Service fee <small>5% illustrative</small></span><strong id="service-fee">GMD 500.00</strong></div><div class="breakdown-row"><span>Applicable tax / charge <small id="tax-caption">Illustrative</small></span><strong id="tax-value">GMD 1,000.00</strong></div><div class="breakdown-row"><span>Other charges</span><strong>GMD 0.00</strong></div><div class="breakdown-row total-row"><span>Total cost of credit</span><strong id="total-cost">GMD 1,500.00</strong></div></div>
+              <div class="effective-cost"><span>Illustrative annualized effective cost</span><b id="effective-cost">121.67% <sup>simple annualized</sup></b></div>
+              <button class="button button-primary button-wide" data-open-demo>Continue with this example <span aria-hidden="true">↗</span></button>
+              <p class="tiny-disclaimer">No offer is made and no application is submitted. Final pricing, taxes, APR/effective cost and terms require lender and regulatory confirmation.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="products-section section-space" id="products">
+          <div class="container">
+            <div class="section-intro split-intro product-intro"><div><div class="eyebrow"><span class="eyebrow-line"></span> A range with room to choose</div><h2>Start small.<br /><em>Move with purpose.</em></h2></div><p>There’s no prize for borrowing more than you need. Browse the full illustrative range and choose the amount that makes sense for your plan — not someone else’s.</p></div>
+            <div class="product-table-wrap"><table class="product-table"><thead><tr><th>Product</th><th>Amount</th><th>Term</th><th>Illustrative fee</th><th>Illustrative repayment</th><th><span class="sr-only">Select</span></th></tr></thead><tbody id="product-rows"></tbody></table></div>
+            <div class="mobile-product-list" id="mobile-product-list"></div>
+          </div>
+        </section>
+
+        <section class="how-section container section-space" id="how-it-works">
+          <div class="section-intro centered-intro"><div class="eyebrow"><span class="eyebrow-line"></span> The Gambia Loan way</div><h2>Clarity at every <em>step.</em></h2><p>Borrowing is a decision, not a race. This prototype maps the journey so you can see what happens before a real lender ever says yes.</p></div>
+          <div class="steps-grid"><article class="step-card"><div class="step-number">01</div><div class="step-icon icon-compass">✦</div><h3>Choose with context</h3><p>Explore the amount, term and full illustrative cost — not just the number that lands in your account.</p><span class="step-arrow">↗</span></article><article class="step-card featured-step"><div class="step-number">02</div><div class="step-icon icon-check">✓</div><h3>Check what fits</h3><p>A responsible lender should review identity, residency, income and affordability before approval.</p><span class="step-arrow">↗</span></article><article class="step-card"><div class="step-number">03</div><div class="step-icon icon-receipt">▤</div><h3>Review, then decide</h3><p>Read the agreement, repayment schedule, late-payment terms and complaint route before acceptance.</p><span class="step-arrow">↗</span></article></div>
+        </section>
+
+        <section class="guardrails-section" id="responsible">
+          <div class="container guardrails-layout"><div class="guardrails-copy"><div class="eyebrow light"><span class="eyebrow-line"></span> Borrowing with both eyes open</div><h2>Good credit<br /><em>leaves room.</em></h2><p>A loan should help you handle a plan — not make the next month harder. We believe clarity, affordability checks and an easy way to ask for help are part of the product.</p><a class="button button-light" href="#support">Know your protections <span aria-hidden="true">↘</span></a></div><div class="guardrail-list"><div class="guardrail-item"><span class="guardrail-num">01</span><div><h3>Affordability first</h3><p>Only consider a repayment you can make alongside food, housing, transport and other essentials.</p></div></div><div class="guardrail-item"><span class="guardrail-num">02</span><div><h3>Nothing hidden</h3><p>Service fees, applicable taxes or charges, late fees and the effective cost should be shown up front.</p></div></div><div class="guardrail-item"><span class="guardrail-num">03</span><div><h3>Help before harm</h3><p>If repayment may be difficult, contact the lender early. Any late fee must be lawful, proportionate and disclosed.</p></div></div></div></div>
+        </section>
+
+        <section class="support-section container section-space" id="support">
+          <div class="support-card"><div class="support-mark" aria-hidden="true">?</div><div class="support-copy"><div class="eyebrow"><span class="eyebrow-line"></span> Questions are part of the journey</div><h2>Need to talk it<br /><em>through?</em></h2><p>For a real product, support should be easy to find — before, during and after repayment. This demo shows the shape of a support path to build into a production service.</p><div class="support-links"><a href="mailto:support@example.com"><span>Support &amp; complaints</span><b>support@example.com ↗</b></a><a href="#privacy"><span>Privacy &amp; data questions</span><b>Read the notice ↗</b></a></div></div><div class="support-note"><span class="quote-mark">“</span><p>Keep a copy of your agreement, repayment schedule and every conversation about your loan.</p><span class="quote-attribution">A good habit for every borrower</span></div></div>
+        </section>
+
+        <section class="final-cta-section container"><div class="final-cta"><div><span class="eyebrow"><span class="eyebrow-line"></span> Your next move</span><h2>See what the<br /><em>numbers say.</em></h2></div><div class="final-cta-actions"><p>Explore an example without submitting an application or sharing personal information.</p><button class="button button-primary" data-open-demo>Open the application demo <span aria-hidden="true">↗</span></button></div></div></section>
+      </main>
+
+      <footer class="site-footer" id="privacy">
+        <div class="container footer-top"><a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><span>G</span></span><span class="brand-wordmark">Gambia<span>Loan</span></span></a><div class="footer-columns"><div><span class="footer-label">Explore</span><a href="#calculator">Loan calculator</a><a href="#products">All products</a><a href="#how-it-works">How it works</a></div><div><span class="footer-label">Good to know</span><a href="#responsible">Responsible lending</a><a href="#support">Support &amp; complaints</a><a href="#privacy">Privacy notice</a></div><div><span class="footer-label">Prototype status</span><p>Illustrative interface only.<br />No real customer data collected.</p></div></div></div>
+        <div class="container footer-bottom"><span>© 2026 Gambia Loan prototype</span><span>Built for clarity in The Gambia <span class="footer-sun">✦</span></span></div>
+        <div class="container legal-note"><strong>Important:</strong> This is a design and product prototype, not a live lending service, offer, approval or financial advice. The GMD 286.50 starter charge and other tax/fee figures are illustrative and must be reviewed with the applicable Gambian legal, tax and regulatory authorities. Replace all sample content, lender details, complaint channels, eligibility rules, APR/effective cost and data practices before accepting real customers or money.</div>
+      </footer>
+    </div>
+
+    <div class="modal-backdrop" id="demo-modal" hidden>
+      <section class="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demo-title">
+        <button class="modal-close" data-close-demo aria-label="Close application demo">×</button>
+        <div class="demo-progress"><span class="active"></span><span></span><span></span><span></span></div>
+        <div class="demo-step" data-demo-step="1"><span class="modal-eyebrow">APPLICATION DEMO · 01</span><h2 id="demo-title">Start with the<br /><em>right amount.</em></h2><p>This guided example does not submit an application or retain personal information.</p><div class="demo-choice"><span class="choice-label">Selected example</span><strong id="demo-amount">GMD 10,000</strong><span id="demo-product">Standard · 45 days</span></div><button class="button button-primary button-wide" data-next-demo>Review eligibility context <span aria-hidden="true">→</span></button></div>
+        <div class="demo-step" data-demo-step="2" hidden><span class="modal-eyebrow">APPLICATION DEMO · 02</span><h2>Check the<br /><em>foundations.</em></h2><p>A real lender should confirm these points using lawful, proportionate checks.</p><div class="demo-check-list"><label><input type="checkbox" /> I meet the lender’s minimum age requirement.</label><label><input type="checkbox" /> I can provide required identity and residency information.</label><label><input type="checkbox" /> I have considered this repayment against my essential expenses.</label></div><button class="button button-primary button-wide" data-next-demo>Continue to cost review <span aria-hidden="true">→</span></button></div>
+        <div class="demo-step" data-demo-step="3" hidden><span class="modal-eyebrow">APPLICATION DEMO · 03</span><h2>Read the full<br /><em>cost first.</em></h2><p>Before acceptance, every material amount should be visible and understandable.</p><div class="demo-review"><div><span>Principal</span><b id="demo-principal">GMD 10,000.00</b></div><div><span>Illustrative service fee</span><b id="demo-fee">GMD 500.00</b></div><div><span>Illustrative tax / charge</span><b id="demo-tax">GMD 1,000.00</b></div><div class="demo-total"><span>Total repayment</span><b id="demo-total">GMD 11,500.00</b></div></div><button class="button button-primary button-wide" data-next-demo>See the final step <span aria-hidden="true">→</span></button></div>
+        <div class="demo-step" data-demo-step="4" hidden><span class="modal-eyebrow">APPLICATION DEMO · 04</span><h2>That’s the<br /><em>whole picture.</em></h2><p>In production, this is where a lender would present the agreement, repayment schedule, privacy notice and acceptance controls.</p><div class="demo-finish"><span class="finish-icon">✓</span><strong>Nothing submitted</strong><span>This prototype ends here — no data is collected or saved.</span></div><button class="button button-outline button-wide" data-close-demo>Back to the example <span aria-hidden="true">↗</span></button></div>
+      </section>
+    </div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

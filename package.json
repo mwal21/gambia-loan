@@ -1,0 +1,11 @@
+{
+  "name": "gambia-loan",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "rm -rf dist && mkdir -p dist && cp index.html styles.css app.js manus-routes.json logo.svg dist/",
+    "check": "node --check app.js && node --check server.js"
+  }
+}

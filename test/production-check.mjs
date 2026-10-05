@@ -25,6 +25,8 @@ for (const product of products) {
 assert(html.includes('id="stk-form"'), 'STK form is missing');
 assert(html.includes('id="stk-phone"'), 'Kenyan phone field is missing');
 assert(html.includes('id="stk-amount"'), 'KES amount field is missing');
+assert(html.includes('id="stk-amount" name="amount" type="number" inputmode="numeric" min="1" step="1" readonly'), 'KES fee must be auto-filled and read-only');
+assert(app.includes('paymentFeeKes(selectedProduct)'), 'Selected product fee is not connected to payment amount');
 assert(app.includes("fetch('/api/swiftwallet/stk-initiate'"), 'Frontend is not connected to the STK endpoint');
 assert(!/support@example|prototype|illustrative|This is a design and product prototype/i.test(html), 'Legacy placeholder copy remains in the customer-facing page');
 assert(css.length > 28000 && css.includes('.stk-form'), 'Full responsive stylesheet or STK styles are missing');
@@ -39,7 +41,7 @@ process.env.SWIFTWALLET_CALLBACK_URL = 'https://gambia-loan.test/api/swiftwallet
 let lastRequest;
 globalThis.fetch = async (url, options) => {
   lastRequest = { url, options, body: JSON.parse(options.body) };
-  return { ok: true, json: async () => ({ success: true, status: 'INITIATED', message: 'sent' }) };
+  return { ok: true, text: async () => JSON.stringify({ success: true, status: 'INITIATED', message: 'sent' }) };
 };
 const { default: stkHandler } = await import('../api/swiftwallet/stk-initiate.js');
 const response = () => ({ statusCode: 200, body: null, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; } });
@@ -49,6 +51,7 @@ for (const [input, expected] of [['0712345678', '254712345678'], ['0112345678', 
   assert.equal(res.statusCode, 200, `${input} should be accepted`);
   assert.equal(lastRequest.body.phone_number, expected, `${input} should normalize to ${expected}`);
 }
+assert.equal(lastRequest.body.currency, 'KES', 'STK request must declare KES currency');
 const invalid = response();
 await stkHandler({ method: 'POST', body: { phone_number: '0201234567', amount: 100 } }, invalid);
 assert.equal(invalid.statusCode, 400, 'Invalid Kenyan phone should be rejected');

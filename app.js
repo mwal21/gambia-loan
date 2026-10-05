@@ -34,6 +34,8 @@ const totalCost = document.querySelector('#total-cost');
 const effectiveCost = document.querySelector('#effective-cost');
 const productRows = document.querySelector('#product-rows');
 const mobileProductList = document.querySelector('#mobile-product-list');
+const stkAmount = document.querySelector('#stk-amount');
+const paymentFeeKes = (product) => Math.max(1, Math.round(product.fee));
 let selectedProduct = products[4];
 
 function nearestProduct(amount) {
@@ -62,12 +64,13 @@ function renderResult(product) {
   totalCost.textContent = money(product.repayment - product.amount);
   effectiveCost.innerHTML = `${(((product.repayment - product.amount) / product.amount) * (365 / product.term) * 100).toFixed(2)}% <sup>simple annualized</sup>`;
   document.querySelectorAll('.quick-amounts button').forEach((button) => button.classList.toggle('active', Number(button.dataset.amount) === product.amount));
+  document.querySelectorAll('.loan-card').forEach((card) => card.classList.toggle('selected', Number(card.querySelector('[data-product]')?.dataset.product) === product.amount));
   updateDemo();
 }
 
 function renderProducts() {
   productRows.innerHTML = products.map((product) => `<tr><td>${product.name}${product.max ? ' <span class="table-badge">MAX</span>' : ''}</td><td>${money(product.amount)}</td><td>${product.term} days</td><td>${money(product.fee)}</td><td>${money(product.repayment)}</td><td><button class="select-product" data-product="${product.amount}">View option ↗</button></td></tr>`).join('');
-  mobileProductList.innerHTML = products.map((product) => `<article class="mobile-product-card"><div><strong>${product.name}</strong><span>${money(product.amount)} · ${product.term} days</span></div><span class="mobile-repay">${money(product.repayment)}</span><button data-product="${product.amount}">View option ↗</button></article>`).join('');
+  mobileProductList.innerHTML = products.map((product, index) => `<article class="loan-card${product.max ? ' loan-card-featured' : ''}"><div class="loan-card-top"><span class="loan-card-index">${String(index + 1).padStart(2, '0')}</span>${product.max ? '<span class="table-badge">MAX RANGE</span>' : ''}</div><div class="loan-card-heading"><div><h3>${product.name}</h3><span class="loan-card-term">${product.term} day repayment term</span></div><span class="loan-card-arrow" aria-hidden="true">↗</span></div><div class="loan-card-amount"><span>GMD</span><strong>${whole(product.amount)}</strong></div><div class="loan-card-details"><div><span>Service fee</span><b>${money(product.fee)}</b></div><div><span>Total repayment</span><b>${money(product.repayment)}</b></div></div><button class="loan-card-button" data-product="${product.amount}">Choose this option <span aria-hidden="true">↗</span></button></article>`).join('');
   document.querySelectorAll('[data-product]').forEach((button) => button.addEventListener('click', () => { renderResult(products.find((product) => product.amount === Number(button.dataset.product))); document.querySelector('#calculator').scrollIntoView({ behavior: 'smooth' }); }));
 }
 
@@ -87,6 +90,7 @@ function updateDemo() {
   document.querySelector('#demo-fee').textContent = money(selectedProduct.fee);
   document.querySelector('#demo-tax').textContent = money(selectedProduct.tax);
   document.querySelector('#demo-total').textContent = money(selectedProduct.repayment);
+  stkAmount.value = paymentFeeKes(selectedProduct);
 }
 function showStep(step) {
   currentStep = step;
@@ -111,7 +115,7 @@ function normalizeKenyanPhone(value) {
 stkForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   const phone = normalizeKenyanPhone(document.querySelector('#stk-phone').value);
-  const amount = Number(document.querySelector('#stk-amount').value);
+  const amount = paymentFeeKes(selectedProduct);
   if (!phone) { stkStatus.textContent = 'Enter a valid Kenyan M-Pesa number.'; stkStatus.className = 'form-status error'; return; }
   if (!Number.isInteger(amount) || amount < 1) { stkStatus.textContent = 'Enter a whole-number fee amount in KES.'; stkStatus.className = 'form-status error'; return; }
   stkSubmit.disabled = true;

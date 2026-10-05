@@ -32,6 +32,7 @@ export default async function handler(req, res) {
 
   const payload = {
     amount,
+    currency: 'KES',
     phone_number: phoneNumber,
     external_reference: `GL-${Date.now()}`,
     callback_url: callbackUrl,
@@ -40,14 +41,27 @@ export default async function handler(req, res) {
   if (process.env.SWIFTWALLET_ACCOUNT_NUMBER) payload.account_number = process.env.SWIFTWALLET_ACCOUNT_NUMBER;
 
   try {
-    const upstream = await fetch(`${baseUrl}/stk-initiate/`, {
+    const upstream = await fetch(`${baseUrl}/stk-initiate`, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'X-API-Key': apiKey,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(15000),
     });
-    const data = await upstream.json();
-    return res.status(upstream.ok ? 200 : 502).json(data);
-  } catch {
+    const responseText = await upstream.text();
+    let data;
+    try { data = responseText ? JSON.parse(responseText) : {}; } catch { data = {}; }
+    if (!upstream.ok) {
+      const message = data.message || data.detail || data.error || `Swift Wallet rejected the request (${upstream.status}).`;
+      return res.status(502).json({ success: false, message });
+    }
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error('Swift Wallet STK initiation failed', error?.message || error);
     return res.status(502).json({ success: false, message: 'Swift Wallet could not be reached. Try again.' });
   }
 }

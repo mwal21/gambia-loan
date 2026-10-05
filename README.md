@@ -25,7 +25,7 @@ The included `vercel.json` uses `npm run build` and publishes `dist/`. No databa
 
 ## Swift Wallet STK payments
 
-The selected architecture is **Gambia loans in GMD + Kenya M-Pesa fee collection in KES**. The production UI collects a Kenyan phone number and KES fee amount, then calls `/api/swiftwallet/stk-initiate` so the Swift Wallet key remains server-side. Configure these Vercel variables:
+The selected architecture is **Gambia loans in GMD + Kenya M-Pesa fee collection in KES**. The production UI collects a Kenyan phone number and automatically carries the selected product's fee into the KES payment field, then calls `/api/swiftwallet/stk-initiate` so the Swift Wallet key remains server-side. The current quote rounds the product fee to a whole KES amount; replace this with an approved FX/fee quote before production. Configure these Vercel variables:
 
 ```env
 SWIFTWALLET_API_BASE_URL=https://swiftwallet.co.ke/v3

@@ -33,7 +33,7 @@ SWIFTWALLET_API_KEY=...
 SWIFTWALLET_CALLBACK_URL=https://your-domain.vercel.app/api/swiftwallet/callback
 ```
 
-Optional: `SWIFTWALLET_CHANNEL_ID` and `SWIFTWALLET_ACCOUNT_NUMBER`. Swift Wallet’s documentation describes a Kenya M-Pesa gateway with KES amounts and Kenyan phone formats (`254...` / `07...`). Define how any GMD fee is converted or quoted in KES, who bears FX movement, and whether the borrower is a Kenya-based payer. The callback endpoint acknowledges status messages; add durable transaction verification and reconciliation before handling production money flows. Never commit the Swift Wallet API key or embed it in `app.js`.
+Optional: `SWIFTWALLET_CHANNEL_ID` and `SWIFTWALLET_ACCOUNT_NUMBER`. Swift Wallet’s documentation describes a Kenya M-Pesa gateway with KES amounts and Kenyan phone formats (`07...`, `01...`, `254...` or `+254...`). Define how any GMD fee is converted or quoted in KES, who bears FX movement, and whether the borrower is a Kenya-based payer. The callback endpoint acknowledges status messages; add durable transaction verification and reconciliation before handling production money flows. Never commit the Swift Wallet API key or embed it in `app.js`.
 
 ## Important
 

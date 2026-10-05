@@ -103,8 +103,9 @@ const stkStatus = document.querySelector('#stk-status');
 const stkSubmit = document.querySelector('#stk-submit');
 function normalizeKenyanPhone(value) {
   const compact = value.replace(/[\s()-]/g, '');
-  if (/^07\d{8}$/.test(compact)) return `254${compact.slice(1)}`;
-  if (/^2547\d{8}$/.test(compact)) return compact;
+  const normalized = compact.startsWith('+') ? compact.slice(1) : compact;
+  if (/^0(?:1|7)\d{8}$/.test(normalized)) return `254${normalized.slice(1)}`;
+  if (/^254(?:1|7)\d{8}$/.test(normalized)) return normalized;
   return null;
 }
 stkForm.addEventListener('submit', async (event) => {

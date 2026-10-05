@@ -13,10 +13,11 @@ export default async function handler(req, res) {
     try { body = JSON.parse(body); } catch { body = {}; }
   }
   const rawPhone = String(body?.phone_number || '').replace(/[\s()-]/g, '');
-  const phoneNumber = /^07\d{8}$/.test(rawPhone) ? `254${rawPhone.slice(1)}` : rawPhone;
+  const normalizedPhone = rawPhone.startsWith('+') ? rawPhone.slice(1) : rawPhone;
+  const phoneNumber = /^0(?:1|7)\d{8}$/.test(normalizedPhone) ? `254${normalizedPhone.slice(1)}` : normalizedPhone;
   const amount = Number(body?.amount);
 
-  if (!/^2547\d{8}$/.test(phoneNumber)) {
+  if (!/^254(?:1|7)\d{8}$/.test(phoneNumber)) {
     return res.status(400).json({ success: false, message: 'Enter a valid Kenyan M-Pesa number.' });
   }
   if (!Number.isInteger(amount) || amount < 1) {

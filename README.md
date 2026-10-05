@@ -25,7 +25,7 @@ The included `vercel.json` uses `npm run build` and publishes `dist/`. No databa
 
 ## Swift Wallet handoff
 
-Swift Wallet is intentionally **not called from the browser** in this prototype. When payment collection is added on Vercel, place the Swift Wallet secret in Vercel Environment Variables and call the provider from a Vercel serverless function or other server-side route. The browser should receive only a short-lived, non-sensitive payment state or redirect URL. Add signature verification for callbacks, idempotency protection, amount/currency validation, timeout handling and a user-visible receipt state before enabling real fee payments. Never commit the Swift Wallet API key or embed it in `app.js`.
+Swift Wallet is intentionally **not called from the browser** in this prototype. Its current documentation describes a Kenya M-Pesa gateway, including **KES amounts** and Kenyan phone formats (`254...` / `07...`), so confirm that Swift Wallet supports The Gambia, GMD and the intended payment channel before implementation. When payment collection is added on Vercel, place the provider secret in Vercel Environment Variables and call it from a Vercel serverless function or other server-side route. The browser should receive only a short-lived, non-sensitive payment state or redirect URL. Add signature verification for callbacks, idempotency protection, amount/currency validation, timeout handling and a user-visible receipt state before enabling real fee payments. Never commit the Swift Wallet API key or embed it in `app.js`.
 
 ## Important
 

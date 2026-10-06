@@ -1,0 +1,2 @@
+import { sessionUser } from '../../lib/mongodb.js';
+export default async function handler(req, res) { if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed.' }); try { const user = await sessionUser(req); return res.status(200).json({ user: user ? { id: user._id.toString(), name: user.name, email: user.email } : null }); } catch (error) { return res.status(503).json({ message: 'Account service is temporarily unavailable.' }); } }

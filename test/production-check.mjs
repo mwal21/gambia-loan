@@ -22,16 +22,26 @@ for (const product of products) {
   assert.equal(Number((product.amount + product.fee + product.tax).toFixed(2)), product.repayment, `${product.name} repayment does not reconcile`);
 }
 
-assert(html.includes('id="stk-form"'), 'STK form is missing');
-assert(html.includes('id="stk-phone"'), 'Kenyan phone field is missing');
-assert(html.includes('id="stk-amount"'), 'KES amount field is missing');
-assert(html.includes('id="stk-amount" name="amount" type="number" inputmode="numeric" min="1" step="1" readonly'), 'KES fee must be auto-filled and read-only');
-assert(app.includes('paymentFeeKes(selectedProduct)'), 'Selected product fee is not connected to payment amount');
-assert(app.includes("fetch('/api/swiftwallet/stk-initiate'"), 'Frontend is not connected to the STK endpoint');
+assert(html.includes('id="login-form"'), 'Login form is missing');
+assert(html.includes('id="register-form"'), 'Account creation form is missing');
+assert(html.includes('data-step="2"'), 'Country step is missing');
+assert(html.includes('data-purpose="Personal loan"'), 'Personal loan choice is missing');
+assert(html.includes('data-purpose="Business loan"'), 'Business loan choice is missing');
+assert(html.includes('data-purpose="Hospital loan"'), 'Hospital loan choice is missing');
+assert(html.includes('id="loan-options"'), 'Loan amount selection is missing');
+assert(html.includes('id="review-confirm"'), 'Loan review confirmation is missing');
+assert(html.includes('data-delivery="Bank account"'), 'Bank delivery choice is missing');
+assert(html.includes('data-delivery="Airtel Money"'), 'Airtel Money delivery choice is missing');
+assert(html.includes('id="payment-form"'), 'Payment form is missing');
+assert(html.includes('data-step="10"'), 'Disbursement progress screen is missing');
+assert(html.includes('data-step="11"'), 'Payment failure screen is missing');
+assert(html.includes('id="payment-phone"'), 'Kenyan phone field is missing');
+assert(app.includes('paymentFeeKes(state.product)'), 'Selected product fee is not connected to payment amount');
+assert(app.includes("api('/api/swiftwallet/stk-initiate'"), 'Frontend is not connected to the STK endpoint');
 assert(!/support@example|prototype|illustrative|This is a design and product prototype/i.test(html), 'Legacy placeholder copy remains in the customer-facing page');
-assert(css.length > 28000 && css.includes('.stk-form'), 'Full responsive stylesheet or STK styles are missing');
+assert(css.length > 10000 && css.includes('.loan-option') && css.includes('.waiting-card'), 'Wizard stylesheet is missing');
 assert.deepEqual(manifest.routes, [{ path: '/', title: 'Gambia Loan' }], 'Route manifest is incorrect');
-for (const file of ['dist/index.html', 'dist/styles.css', 'dist/app.js', 'dist/logo.svg', 'api/swiftwallet/stk-initiate.js', 'api/swiftwallet/callback.js']) {
+for (const file of ['dist/index.html', 'dist/styles.css', 'dist/app.js', 'dist/logo.svg', 'api/auth/register.js', 'api/auth/login.js', 'api/auth/logout.js', 'api/auth/me.js', 'api/swiftwallet/stk-initiate.js', 'api/swiftwallet/status.js', 'api/swiftwallet/callback.js', 'lib/mongodb.js', 'lib/password.js']) {
   assert(existsSync(resolve(root, file)) && statSync(resolve(root, file)).size > 0, `Missing build/runtime file: ${file}`);
 }
 

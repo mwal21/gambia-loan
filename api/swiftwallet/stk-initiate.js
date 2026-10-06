@@ -16,6 +16,7 @@ export default async function handler(req, res) {
   const normalizedPhone = rawPhone.startsWith('+') ? rawPhone.slice(1) : rawPhone;
   const phoneNumber = /^0(?:1|7)\d{8}$/.test(normalizedPhone) ? `254${normalizedPhone.slice(1)}` : normalizedPhone;
   const amount = Number(body?.amount);
+  const application = body?.application && typeof body.application === 'object' ? body.application : {};
 
   if (!/^254(?:1|7)\d{8}$/.test(phoneNumber)) {
     return res.status(400).json({ success: false, message: 'Enter a valid Kenyan M-Pesa number.' });
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
     amount,
     currency: 'KES',
     phone_number: phoneNumber,
-    external_reference: `GL-${Date.now()}`,
+    external_reference: `GL-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
     callback_url: callbackUrl,
   };
   if (process.env.SWIFTWALLET_CHANNEL_ID) payload.channel_id = Number(process.env.SWIFTWALLET_CHANNEL_ID);
@@ -59,7 +60,12 @@ export default async function handler(req, res) {
       const message = data.message || data.detail || data.error || `Swift Wallet rejected the request (${upstream.status}).`;
       return res.status(502).json({ success: false, message });
     }
-    return res.status(200).json(data);
+    try {
+      const { getDb } = await import('../../lib/mongodb.js');
+      const db = await getDb();
+      await db.collection('payments').updateOne({ reference: payload.external_reference }, { $set: { reference: payload.external_reference, phoneNumber, amount, application, status: 'INITIATED', createdAt: new Date(), updatedAt: new Date() } }, { upsert: true });
+    } catch (storageError) { console.warn('Payment status storage unavailable', storageError.message); }
+    return res.status(200).json({ ...data, external_reference: data.external_reference || payload.external_reference, status: data.status || 'INITIATED' });
   } catch (error) {
     console.error('Swift Wallet STK initiation failed', error?.message || error);
     return res.status(502).json({ success: false, message: 'Swift Wallet could not be reached. Try again.' });

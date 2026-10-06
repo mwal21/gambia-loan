@@ -8,5 +8,8 @@
     "build": "rm -rf dist && mkdir -p dist && cp index.html styles.css app.js manus-routes.json logo.svg dist/",
     "check": "node --check app.js && node --check server.js",
     "test": "npm run build && node test/production-check.mjs"
+  },
+  "dependencies": {
+    "mongodb": "^6.21.0"
   }
 }

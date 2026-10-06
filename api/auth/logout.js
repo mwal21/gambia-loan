@@ -1,0 +1,2 @@
+import { clearSessionCookie, getDb, parseCookies } from '../../lib/mongodb.js';
+export default async function handler(req, res) { if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed.' }); try { const cookies = parseCookies(req.headers?.cookie); if (cookies.gambia_session) { const db = await getDb(); await db.collection('sessions').deleteOne({ token: cookies.gambia_session }); } } catch (error) { console.error('Logout cleanup failed', error.message); } clearSessionCookie(res); return res.status(200).json({ ok: true }); }

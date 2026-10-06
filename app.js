@@ -1,5 +1,5 @@
 const products = [
-  { name: 'Starter', amount: 2864, term: 30, fee: 143.2, tax: 286.5, repayment: 3293.7, note: 'The smallest loan amount.', taxCaption: 'Starter charge' },
+  { name: 'Starter', amount: 2864, term: 30, fee: 143.2, tax: 286.5, repayment: 3293.7, note: 'The smallest loan amount.' },
   { name: 'Starter Plus', amount: 3500, term: 30, fee: 175, tax: 350, repayment: 4025, note: 'A little more room for the month.' },
   { name: 'Basic', amount: 5000, term: 30, fee: 250, tax: 500, repayment: 5750, note: 'A straightforward everyday option.' },
   { name: 'Basic Plus', amount: 7500, term: 30, fee: 375, tax: 750, repayment: 8625, note: 'For a plan with a few more moving parts.' },
@@ -16,121 +16,44 @@ const products = [
   { name: 'Business 85', amount: 85000, term: 120, fee: 4250, tax: 8500, repayment: 97750, note: 'A 120-day repayment period.' },
   { name: 'Maximum', amount: 100000, term: 120, fee: 5000, tax: 10000, repayment: 115000, note: 'The maximum loan amount.', max: true },
 ];
-
 const money = (value) => `GMD ${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const whole = (value) => Number(value).toLocaleString('en-US');
-const amountRange = document.querySelector('#amount-range');
-const amountOutput = document.querySelector('#amount-output');
-const productName = document.querySelector('#product-name');
-const productNote = document.querySelector('#product-note');
-const productTerm = document.querySelector('#product-term');
-const totalRepayment = document.querySelector('#total-repayment');
-const dueDate = document.querySelector('#due-date');
-const principalValue = document.querySelector('#principal-value');
-const serviceFee = document.querySelector('#service-fee');
-const taxValue = document.querySelector('#tax-value');
-const taxCaption = document.querySelector('#tax-caption');
-const totalCost = document.querySelector('#total-cost');
-const effectiveCost = document.querySelector('#effective-cost');
-const productRows = document.querySelector('#product-rows');
-const mobileProductList = document.querySelector('#mobile-product-list');
-const stkAmount = document.querySelector('#stk-amount');
-const paymentFeeKes = (product) => Math.max(1, Math.round(product.fee));
-let selectedProduct = products[4];
-
-function nearestProduct(amount) {
-  return products.reduce((closest, product) => Math.abs(product.amount - amount) < Math.abs(closest.amount - amount) ? product : closest, products[0]);
-}
-
-function getDueDate(term) {
-  const date = new Date();
-  date.setDate(date.getDate() + term);
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function renderResult(product) {
-  selectedProduct = product;
-  amountRange.value = product.amount;
-  amountOutput.textContent = whole(product.amount);
-  productName.textContent = product.name;
-  productNote.textContent = product.note;
-  productTerm.textContent = `${product.term} days`;
-  totalRepayment.textContent = money(product.repayment);
-  dueDate.textContent = getDueDate(product.term);
-  principalValue.textContent = money(product.amount);
-  serviceFee.textContent = money(product.fee);
-  taxValue.textContent = money(product.tax);
-  taxCaption.textContent = product.taxCaption || 'Subject to law';
-  totalCost.textContent = money(product.repayment - product.amount);
-  effectiveCost.innerHTML = `${(((product.repayment - product.amount) / product.amount) * (365 / product.term) * 100).toFixed(2)}% <sup>simple annualized</sup>`;
-  document.querySelectorAll('.quick-amounts button').forEach((button) => button.classList.toggle('active', Number(button.dataset.amount) === product.amount));
-  document.querySelectorAll('.loan-card').forEach((card) => card.classList.toggle('selected', Number(card.querySelector('[data-product]')?.dataset.product) === product.amount));
-  updateDemo();
-}
-
-function renderProducts() {
-  productRows.innerHTML = products.map((product) => `<tr><td>${product.name}${product.max ? ' <span class="table-badge">MAX</span>' : ''}</td><td>${money(product.amount)}</td><td>${product.term} days</td><td>${money(product.fee)}</td><td>${money(product.repayment)}</td><td><button class="select-product" data-product="${product.amount}">View option ↗</button></td></tr>`).join('');
-  mobileProductList.innerHTML = products.map((product, index) => `<article class="loan-card${product.max ? ' loan-card-featured' : ''}"><div class="loan-card-top"><span class="loan-card-index">${String(index + 1).padStart(2, '0')}</span>${product.max ? '<span class="table-badge">MAX RANGE</span>' : ''}</div><div class="loan-card-heading"><div><h3>${product.name}</h3><span class="loan-card-term">${product.term} day repayment term</span></div><span class="loan-card-arrow" aria-hidden="true">↗</span></div><div class="loan-card-amount"><span>GMD</span><strong>${whole(product.amount)}</strong></div><div class="loan-card-details"><div><span>Service fee</span><b>${money(product.fee)}</b></div><div><span>Total repayment</span><b>${money(product.repayment)}</b></div></div><button class="loan-card-button" data-product="${product.amount}">Choose this option <span aria-hidden="true">↗</span></button></article>`).join('');
-  document.querySelectorAll('[data-product]').forEach((button) => button.addEventListener('click', () => { renderResult(products.find((product) => product.amount === Number(button.dataset.product))); document.querySelector('#calculator').scrollIntoView({ behavior: 'smooth' }); }));
-}
-
-amountRange.addEventListener('input', (event) => renderResult(nearestProduct(Number(event.target.value))));
-document.querySelectorAll('.quick-amounts button').forEach((button) => button.addEventListener('click', () => renderResult(products.find((product) => product.amount === Number(button.dataset.amount)))));
-renderProducts();
-renderResult(selectedProduct);
-
-const modal = document.querySelector('#demo-modal');
-const steps = [...document.querySelectorAll('[data-demo-step]')];
-const progress = [...document.querySelectorAll('.demo-progress span')];
-let currentStep = 1;
-function updateDemo() {
-  document.querySelector('#demo-amount').textContent = money(selectedProduct.amount);
-  document.querySelector('#demo-product').textContent = `${selectedProduct.name} · ${selectedProduct.term} days`;
-  document.querySelector('#demo-principal').textContent = money(selectedProduct.amount);
-  document.querySelector('#demo-fee').textContent = money(selectedProduct.fee);
-  document.querySelector('#demo-tax').textContent = money(selectedProduct.tax);
-  document.querySelector('#demo-total').textContent = money(selectedProduct.repayment);
-  stkAmount.value = paymentFeeKes(selectedProduct);
-}
-function showStep(step) {
-  currentStep = step;
-  steps.forEach((element) => { element.hidden = Number(element.dataset.demoStep) !== step; });
-  progress.forEach((element, index) => element.classList.toggle('active', index < step));
-}
-function openDemo() { updateDemo(); showStep(1); modal.hidden = false; document.querySelector('.modal-close').focus(); }
-function closeDemo() { modal.hidden = true; }
-document.querySelectorAll('[data-open-demo]').forEach((button) => button.addEventListener('click', openDemo));
-document.querySelectorAll('[data-close-demo]').forEach((button) => button.addEventListener('click', closeDemo));
-document.querySelectorAll('[data-next-demo]').forEach((button) => button.addEventListener('click', () => showStep(Math.min(4, currentStep + 1))));
-const stkForm = document.querySelector('#stk-form');
-const stkStatus = document.querySelector('#stk-status');
-const stkSubmit = document.querySelector('#stk-submit');
-function normalizeKenyanPhone(value) {
-  const compact = value.replace(/[\s()-]/g, '');
-  const normalized = compact.startsWith('+') ? compact.slice(1) : compact;
-  if (/^0(?:1|7)\d{8}$/.test(normalized)) return `254${normalized.slice(1)}`;
-  if (/^254(?:1|7)\d{8}$/.test(normalized)) return normalized;
-  return null;
-}
-stkForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const phone = normalizeKenyanPhone(document.querySelector('#stk-phone').value);
-  const amount = paymentFeeKes(selectedProduct);
-  if (!phone) { stkStatus.textContent = 'Enter a valid Kenyan M-Pesa number.'; stkStatus.className = 'form-status error'; return; }
-  if (!Number.isInteger(amount) || amount < 1) { stkStatus.textContent = 'Enter a whole-number fee amount in KES.'; stkStatus.className = 'form-status error'; return; }
-  stkSubmit.disabled = true;
-  stkStatus.textContent = 'Sending the STK prompt…';
-  stkStatus.className = 'form-status';
-  try {
-    const response = await fetch('/api/swiftwallet/stk-initiate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone_number: phone, amount }) });
-    const data = await response.json();
-    if (!response.ok || data.success === false) throw new Error(data.message || 'The payment request could not be started.');
-    stkStatus.textContent = data.message || 'STK prompt sent. Check the phone and enter the M-Pesa PIN.';
-    stkStatus.className = 'form-status success';
-  } catch (error) {
-    stkStatus.textContent = error.message || 'Unable to send the STK prompt. Try again.';
-    stkStatus.className = 'form-status error';
-  } finally { stkSubmit.disabled = false; }
-});
-modal.addEventListener('click', (event) => { if (event.target === modal) closeDemo(); });
-document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !modal.hidden) closeDemo(); });
+const paymentFeeKes = (product) => Math.max(1, Math.round(product.tax));
+const state = { step: 1, account: null, country: '', purpose: '', product: products[4], delivery: '', recipient: {}, reference: '' };
+const steps = [...document.querySelectorAll('.wizard-step')];
+const statusBox = document.querySelector('#wizard-status');
+const progressLabel = document.querySelector('#progress-label');
+const progressCount = document.querySelector('#progress-count');
+const progressBar = document.querySelector('#progress-bar');
+const labels = { 1: 'ACCOUNT', 2: 'YOUR LOCATION', 3: 'LOAN PURPOSE', 4: 'LOAN AMOUNT', 5: 'REVIEW', 6: 'DELIVERY', 7: 'YOUR DETAILS', 8: 'APPLICATION REVIEW', 9: 'PAYMENT', 10: 'DISBURSEMENT', 11: 'FAILED' };
+let paymentPollTimer;
+function message(text = '', type = '') { statusBox.textContent = text; statusBox.className = `wizard-status ${type}`; }
+function go(step) { state.step = step; steps.forEach((el) => { el.classList.toggle('active', Number(el.dataset.step) === step); }); const completed = Math.min(step, 9); progressLabel.textContent = labels[step] || 'APPLICATION'; progressCount.textContent = `${String(Math.min(step, 9)).padStart(2, '0')} / 09`; progressBar.style.width = `${(completed / 9) * 100}%`; window.scrollTo({ top: 0, behavior: 'smooth' }); message(); }
+function saveLocal() { localStorage.setItem('gambia-loan-application', JSON.stringify(state)); }
+function restoreLocal() { try { const saved = JSON.parse(localStorage.getItem('gambia-loan-application') || 'null'); if (!saved) return; Object.assign(state, { country: saved.country || '', purpose: saved.purpose || '', delivery: saved.delivery || '', recipient: saved.recipient || {}, reference: saved.reference || '' }); if (saved.product?.amount) state.product = products.find((product) => product.amount === saved.product.amount) || state.product; } catch {} }
+function updateAccountChip() { const chip = document.querySelector('#account-chip'); if (!state.account) return chip.hidden = true; chip.hidden = false; document.querySelector('#account-label').textContent = state.account.name; document.querySelector('#account-avatar').textContent = state.account.name[0].toUpperCase(); }
+function renderLoanOptions() { document.querySelector('#loan-options').innerHTML = products.map((p, i) => `<button class="loan-option${p.amount === state.product.amount ? ' selected' : ''}" data-product="${p.amount}" type="button"><span class="loan-number">${String(i + 1).padStart(2, '0')}${p.max ? ' · MAX' : ''}</span><strong>${p.name}</strong><span class="loan-amount"><small>GMD</small>${whole(p.amount)}</span><div><span>${p.term} days</span><b>${money(p.repayment)}</b></div><small>Fee ${money(p.fee)} · Charge ${money(p.tax)}</small></button>`).join(''); document.querySelectorAll('[data-product]').forEach((button) => button.addEventListener('click', () => { state.product = products.find((p) => p.amount === Number(button.dataset.product)); renderLoanOptions(); go(5); renderReview(); saveLocal(); })); }
+function renderReview() { const p = state.product; document.querySelector('#review-name').textContent = p.name; document.querySelector('#review-term').textContent = `${p.term} days`; document.querySelector('#review-repayment').textContent = money(p.repayment); document.querySelector('#review-principal').textContent = money(p.amount); document.querySelector('#review-fee').textContent = money(p.fee); document.querySelector('#review-tax').textContent = money(p.tax); document.querySelector('#review-cost').textContent = money(p.repayment - p.amount); }
+function renderSummary() { document.querySelector('#summary-name').textContent = state.recipient.name || state.account?.name || '—'; document.querySelector('#summary-purpose').textContent = state.purpose; document.querySelector('#summary-delivery').textContent = state.delivery; document.querySelector('#summary-loan').textContent = `${state.product.name} · ${money(state.product.amount)}`; document.querySelector('#payment-amount').textContent = `KES ${paymentFeeKes(state.product).toLocaleString('en-US')}`; }
+function applyContext() { document.querySelector('#context-country').textContent = state.country; document.querySelector('#context-purpose').textContent = state.purpose; }
+async function api(path, options = {}) { const response = await fetch(path, { headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }, ...options }); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Something went wrong.'); return data; }
+function authTab(tab) { document.querySelectorAll('.auth-tab').forEach((button) => button.classList.toggle('active', button.dataset.authTab === tab)); document.querySelector('#login-form').hidden = tab !== 'login'; document.querySelector('#register-form').hidden = tab !== 'register'; }
+document.querySelectorAll('[data-auth-tab]').forEach((button) => button.addEventListener('click', () => authTab(button.dataset.authTab)));
+document.querySelector('#register-form').addEventListener('submit', async (event) => { event.preventDefault(); const form = new FormData(event.currentTarget); try { const data = await api('/api/auth/register', { method: 'POST', body: JSON.stringify(Object.fromEntries(form)) }); state.account = data.user; updateAccountChip(); go(2); saveLocal(); } catch (error) { message(error.message, 'error'); } });
+document.querySelector('#login-form').addEventListener('submit', async (event) => { event.preventDefault(); const form = new FormData(event.currentTarget); try { const data = await api('/api/auth/login', { method: 'POST', body: JSON.stringify(Object.fromEntries(form)) }); state.account = data.user; updateAccountChip(); go(2); saveLocal(); } catch (error) { message(error.message, 'error'); } });
+document.querySelectorAll('[data-country]').forEach((button) => button.addEventListener('click', () => { state.country = button.dataset.country; document.querySelectorAll('[data-country]').forEach((item) => item.classList.toggle('selected', item === button)); go(3); saveLocal(); }));
+document.querySelectorAll('[data-purpose]').forEach((button) => button.addEventListener('click', () => { state.purpose = button.dataset.purpose; document.querySelectorAll('[data-purpose]').forEach((item) => item.classList.toggle('selected', item === button)); applyContext(); go(4); saveLocal(); }));
+document.querySelectorAll('[data-delivery]').forEach((button) => button.addEventListener('click', () => { state.delivery = button.dataset.delivery; document.querySelectorAll('[data-delivery]').forEach((item) => item.classList.toggle('selected', item === button)); document.querySelector('#recipient-number-label').firstChild.textContent = state.delivery === 'Bank account' ? 'Bank account number' : 'Airtel Money number'; document.querySelector('#recipient-number').placeholder = state.delivery === 'Bank account' ? 'Enter bank account number' : 'Enter Airtel Money number'; go(7); saveLocal(); }));
+document.querySelectorAll('[data-back]').forEach((button) => button.addEventListener('click', () => go(Math.max(1, state.step - 1))));
+document.querySelector('#review-confirm').addEventListener('change', (event) => { document.querySelector('#review-continue').disabled = !event.target.checked; });
+document.querySelector('#review-continue').addEventListener('click', () => { renderSummary(); go(6); });
+document.querySelector('#recipient-form').addEventListener('submit', (event) => { event.preventDefault(); const form = new FormData(event.currentTarget); state.recipient = { name: form.get('recipientName'), number: form.get('recipientNumber'), note: form.get('recipientNote') }; renderSummary(); go(8); saveLocal(); });
+document.querySelector('#approve-button').addEventListener('click', () => go(9));
+async function waitForPaymentConfirmation(status) { const started = Date.now(); status.textContent = 'Prompt sent. Waiting for payment confirmation…'; paymentPollTimer = setInterval(async () => { if (Date.now() - started > 30 * 60 * 1000) { clearInterval(paymentPollTimer); document.querySelector('#failure-message').textContent = 'Payment was not confirmed within 30 minutes. No disbursement has been made.'; go(11); return; } try { const data = await api(`/api/swiftwallet/status?reference=${encodeURIComponent(state.reference)}`); if (data.status === 'SUCCESS') { clearInterval(paymentPollTimer); document.querySelector('#reference-label').textContent = `Reference: ${state.reference}`; go(10); saveLocal(); } else if (data.status === 'FAILED') { clearInterval(paymentPollTimer); document.querySelector('#failure-message').textContent = 'Swift Wallet reported that the payment failed or was cancelled. No disbursement has been made.'; go(11); } } catch {} }, 3000); }
+document.querySelector('#payment-form').addEventListener('submit', async (event) => { event.preventDefault(); const phone = document.querySelector('#payment-phone').value; const submit = document.querySelector('#payment-submit'); const status = document.querySelector('#payment-status'); submit.disabled = true; status.textContent = 'Sending secure M-Pesa prompt…'; status.className = 'form-status'; try { const data = await api('/api/swiftwallet/stk-initiate', { method: 'POST', body: JSON.stringify({ phone_number: phone, amount: paymentFeeKes(state.product), application: { country: state.country, purpose: state.purpose, delivery: state.delivery, loan_amount: state.product.amount } }) }); state.reference = data.external_reference || data.reference || 'Pending reference'; await waitForPaymentConfirmation(status); } catch (error) { document.querySelector('#failure-message').textContent = error.message || 'The payment request could not be completed. No disbursement has been made.'; go(11); } finally { submit.disabled = false; } });
+document.querySelector('#retry-payment').addEventListener('click', () => go(9));
+document.querySelector('#restart-button').addEventListener('click', () => { localStorage.removeItem('gambia-loan-application'); window.location.reload(); });
+document.querySelector('#logout-button').addEventListener('click', async () => { try { await api('/api/auth/logout', { method: 'POST' }); } catch {} localStorage.removeItem('gambia-loan-application'); window.location.reload(); });
+document.querySelector('#refresh-status').addEventListener('click', async () => { if (!state.reference) return; try { const data = await api(`/api/swiftwallet/status?reference=${encodeURIComponent(state.reference)}`); if (data.status === 'SUCCESS' || data.status === 'PAID') message('Payment confirmed. Lender review is now in progress.', 'success'); else if (data.status === 'FAILED') go(11); else message('Payment is still awaiting confirmation.', ''); } catch (error) { message(error.message, 'error'); } });
+restoreLocal(); renderLoanOptions(); renderReview(); updateAccountChip();
+(async () => { try { const data = await api('/api/auth/me'); if (data.user) { state.account = data.user; updateAccountChip(); const saved = JSON.parse(localStorage.getItem('gambia-loan-application') || 'null'); if (saved?.step > 1 && saved.step < 10) go(saved.step); } } catch {} })();

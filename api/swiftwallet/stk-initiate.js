@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     let data;
     try { data = responseText ? JSON.parse(responseText) : {}; } catch { data = {}; }
     if (!upstream.ok) {
-      const message = data.message || data.detail || data.error || `Swift Wallet rejected the request (${upstream.status}).`;
+      const message = data.message || data.detail || data.error || `Gambia Loan rejected the request (${upstream.status}).`;
       return res.status(502).json({ success: false, message });
     }
     try {
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
     } catch (storageError) { console.warn('Payment status storage unavailable', storageError.message); }
     return res.status(200).json({ ...data, external_reference: data.external_reference || payload.external_reference, status: data.status || 'INITIATED' });
   } catch (error) {
-    console.error('Swift Wallet STK initiation failed', error?.message || error);
-    return res.status(502).json({ success: false, message: 'Swift Wallet could not be reached. Try again.' });
+    console.error('Gambia Loan STK initiation failed', error?.message || error);
+    return res.status(502).json({ success: false, message: 'Gambia Loan payment service could not be reached. Try again.' });
   }
 }
